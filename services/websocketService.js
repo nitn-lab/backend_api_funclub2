@@ -29,7 +29,7 @@ function setupWebSocketServer(server) {
         } else if (type === "call") {
           handleCallRequest(ws, from, to, channelName);
         } else if (type === "chatMessage") {
-          await handleChatMessage(wss, from, to, chatMessage);
+          await saveChatMessage(wss, from, to, chatMessage);
         } else if (type === "getChatHistory") {
           const chatHistory = await getChatHistory(from, to);
           ws.send(JSON.stringify({ type: "chatHistory", chatHistory }));
