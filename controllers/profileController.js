@@ -1,5 +1,6 @@
 const path = require("path");
 const UserModel = require("../models/usersModel");
+const { uploadToS3 } = require("../utils/s3Upload");
 // Controller to handle profile image upload
 exports.uploadProfileImage = async (req, res) => {
   if (!req.file) {
@@ -11,7 +12,12 @@ exports.uploadProfileImage = async (req, res) => {
     return res.status(404).json({ error: "User not found" });
   }
   // Generate URL to access the uploaded file
-  const imageUrl = `${req.protocol}://backendapifunclub.yourwebstore.org.in/uploads/profileImages/${req.file.filename}`;
+  const imageUrl = null;
+
+  if(image){
+    imageUrl = await uploadToS3(image[0], 'profileImage')
+  }
+  
 
   // Update user's profile image
   user.profileImage = imageUrl;
