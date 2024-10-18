@@ -1,23 +1,6 @@
 const multer = require('multer');
 const path = require('path');
 
-// // Multer storage and configuration
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     // Check if the file is an image or a video and store in the appropriate folder
-//     if (file.mimetype.startsWith("image")) {
-//       cb(null, 'uploads/postImages'); // Store images in 'uploads/images'
-//     } else if (file.mimetype.startsWith("video")) {
-//       cb(null, 'uploads/postVideos'); // Store videos in 'uploads/videos'
-//     } else {
-//       cb(new Error('Invalid file type'), false); // Handle unsupported file types
-//     }
-//   },
-//   filename: (req, file, cb) => {
-//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-//     cb(null, uniqueSuffix + path.extname(file.originalname)); // Create a unique filename
-//   }
-// });
 const storage = multer.memoryStorage();
 // File filter to validate image and video file types
 const upload = multer({
