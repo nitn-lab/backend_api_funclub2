@@ -767,7 +767,7 @@ module.exports = {
       }
 
       const users = await UserModel.find(searchQuery)
-        .select("username email bio profileImage followers following") // Return only the fields you need
+        .select("username role email bio profileImage followers following") // Return only the fields you need
         .exec();
 
       res.status(200).json(users);

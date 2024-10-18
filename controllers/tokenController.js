@@ -3,7 +3,7 @@ const { generateAgoraToken } = require('../utils/generateToken');
 exports.generateToken = (req, res) => {
   const { channelName } = req.query;
   // const { uid, channelName } = req.query;
-  console.log("fgfgfg",channelName, req.query);
+  // console.log("fgfgfg",channelName, req.query);
   if (!channelName) {
     return res.status(400).json({ error: 'Channel name is required' });
   }

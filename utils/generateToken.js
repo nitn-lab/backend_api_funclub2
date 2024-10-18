@@ -39,7 +39,7 @@ exports.generateAgoraToken = (channelName) => {
     privilegeExpiredTs
   );
 
-  console.log("Generated Token: ", token);
+  // console.log("Generated Token: ", token);
 
   return { token, uid, channelName };
 };
