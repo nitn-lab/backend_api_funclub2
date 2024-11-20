@@ -14,9 +14,12 @@ function setupWebSocketServer(server) {
       const { type, from, to, channelName, chatMessage } = JSON.parse(message);
       console.log("Received message:", { type, from, to, chatMessage });
       if (type === "register") {
+        delete activeCalls[from];                               
         ws.username = from;
         console.log(`User ${from} registered`);
       } else if (type === "call") {
+        console.log("Attempting to place a call between:", from, to);
+        console.log("Current activeCalls:", activeCalls);
         if (activeCalls[to] || activeCalls[from]) {
           ws.send(
             JSON.stringify({
