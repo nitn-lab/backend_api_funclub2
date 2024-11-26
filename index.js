@@ -1,7 +1,8 @@
 // Creating the server using express
 const express = require("express");
 var cors = require('cors');
-const http = require("http"); 
+const https = require('https');
+const fs = require('fs');
 const app = express();
 const {setupWebSocketServer} = require('./services/websocketService')
 const routes = require("./routes/index");
@@ -15,8 +16,17 @@ app.use("/api/v1", routes); //! USING API VERSION - 1
 const User = require("./models/usersModel");
 app.use('/uploads', express.static('uploads'));
 
+// Use SSL certificate and key to create an HTTPS server
+const sslOptions = {
+  key: fs.readFileSync('/etc/letsencrypt/live/backendapifunclub.yourwebstore.org.in/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/backendapifunclub.yourwebstore.org.in/fullchain.pem')
+};
+
+const server = https.createServer(sslOptions, app); // Use HTTPS instead of HTTP
+
+
 // Create HTTP server using Express app
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
 // Initialize WebSocket server
 setupWebSocketServer(server); // Pass HTTP server to WebSocket initializer
@@ -24,7 +34,7 @@ setupWebSocketServer(server); // Pass HTTP server to WebSocket initializer
 // To start the server and listen to that port
 // console.log("dot", process.env)
 const port = process.env.PORT || 1000; //will configure environment vairables later
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Checking if server is running ${port}`);
 });
 
