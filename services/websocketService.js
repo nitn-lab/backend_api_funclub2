@@ -11,7 +11,7 @@ function setupWebSocketServer(server) {
   wss.on("connection", (ws) => {
     // console.log("ws", ws);
     ws.on("message", async (message) => {
-      const { type, from, to, channelName, chatMessage } = JSON.parse(message);
+      const { type, from, to, channelName, chatMessage, callType } = JSON.parse(message);
       console.log("Received message:", { type, from, to, chatMessage, callType });
       if (type === "register") {
         delete activeCalls[from]; 
