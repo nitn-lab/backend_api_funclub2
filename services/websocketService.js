@@ -14,7 +14,8 @@ function setupWebSocketServer(server) {
       const { type, from, to, channelName, chatMessage } = JSON.parse(message);
       console.log("Received message:", { type, from, to, chatMessage });
       if (type === "register") {
-        delete activeCalls[from];                               
+        delete activeCalls[from]; 
+        delete activeCalls[to];                              
         ws.username = from;
         console.log(`User ${from} registered`);
       } else if (type === "call") {
@@ -42,7 +43,21 @@ function setupWebSocketServer(server) {
           );
         }
       } else if (type === "acceptCall") {
-        ws.send(JSON.stringify({ type: "callAccepted", channelName }));
+        console.log("activeCalls[to]", activeCalls[to]); console.log("activeCalls[tochannelName]", channelName);
+        console.log("activeCalls[from]", activeCalls[from]); console.log("activeCalls[FromchannelName]", channelName);
+        if (activeCalls[to] === channelName && activeCalls[from] === channelName) {
+          // Notify both participants that the call has been accepted
+          broadcast(to, JSON.stringify({ type: "callAccepted", channelName }));
+          ws.send(JSON.stringify({ type: "callAccepted", channelName }));
+          console.log(`Call accepted between ${from} and ${to}`);
+        } else {
+          ws.send(
+            JSON.stringify({
+              type: "error",
+              message: "Call not found or already ended.",
+            })
+          );
+        }
       } else if (type === "endCall") {
         delete activeCalls[from];
         delete activeCalls[to];
