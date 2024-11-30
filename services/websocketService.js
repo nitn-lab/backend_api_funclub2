@@ -12,7 +12,7 @@ function setupWebSocketServer(server) {
     // console.log("ws", ws);
     ws.on("message", async (message) => {
       const { type, from, to, channelName, chatMessage } = JSON.parse(message);
-      console.log("Received message:", { type, from, to, chatMessage });
+      console.log("Received message:", { type, from, to, chatMessage, callType });
       if (type === "register") {
         delete activeCalls[from]; 
         delete activeCalls[to];                              
@@ -39,6 +39,7 @@ function setupWebSocketServer(server) {
               type: "incomingCall",
               from,
               channelName: newChannelName,
+              callType: callType
             })
           );
         }
